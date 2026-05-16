@@ -1,0 +1,483 @@
+/* ============================================================
+   Queima das Fitas do Porto — Dark Festival Theme
+   ============================================================ */
+
+:root {
+  --qf-red:      #e63946;
+  --qf-gold:     #f4c542;
+  --qf-dark:     #0d0d1a;
+  --qf-dark2:    #12122a;
+  --qf-dark3:    #1a1a35;
+  --qf-card-bg:  #1e1e3a;
+  --qf-border:   #2e2e5e;
+  --qf-text:     #e0e0f0;
+  --qf-muted:    #8888aa;
+  --qf-success:  #2ecc71;
+  --qf-info:     #3498db;
+}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--qf-dark);
+  color: var(--qf-text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: var(--qf-gold); text-decoration: none; transition: color .2s; }
+a:hover { color: var(--qf-red); }
+
+/* ---- Navbar ---- */
+.qf-navbar {
+  background: linear-gradient(135deg, #0a0a18 0%, #1a0a0a 100%);
+  border-bottom: 2px solid var(--qf-red);
+  padding: .75rem 0;
+}
+
+.qf-navbar .navbar-brand {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--qf-gold) !important;
+  letter-spacing: .5px;
+}
+
+.qf-navbar .nav-link {
+  color: var(--qf-text) !important;
+  font-size: .92rem;
+  padding: .45rem .75rem;
+  border-radius: 6px;
+  transition: background .2s, color .2s;
+}
+
+.qf-navbar .nav-link:hover,
+.qf-navbar .nav-link.active {
+  background: rgba(230,57,70,.15);
+  color: var(--qf-gold) !important;
+}
+
+.qf-dropdown {
+  background: var(--qf-dark3);
+  border: 1px solid var(--qf-border);
+}
+
+.qf-dropdown .dropdown-item {
+  color: var(--qf-text);
+  transition: background .2s;
+}
+
+.qf-dropdown .dropdown-item:hover {
+  background: rgba(230,57,70,.2);
+  color: var(--qf-gold);
+}
+
+.qf-dropdown .dropdown-divider { border-color: var(--qf-border); }
+
+/* ---- Alert Banner (48h) ---- */
+.qf-alert-banner {
+  background: linear-gradient(90deg, #7b1010 0%, #a01a1a 100%);
+  border: none;
+  color: #fff;
+  font-size: .9rem;
+}
+
+.qf-alert-banner .alert-link { color: var(--qf-gold); }
+
+.qf-flash { border-radius: 0; border-left: none; border-right: none; }
+
+/* ---- Main content ---- */
+.qf-main { flex: 1; padding-bottom: 2rem; }
+
+/* ---- Hero Section ---- */
+.qf-hero {
+  background: linear-gradient(135deg, #0d0d1a 0%, #1a0520 40%, #200a0a 100%);
+  padding: 5rem 0 4rem;
+  text-align: center;
+  border-bottom: 1px solid var(--qf-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.qf-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(230,57,70,.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(244,197,66,.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.qf-hero h1 {
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 800;
+  color: var(--qf-gold);
+  text-shadow: 0 2px 20px rgba(230,57,70,.5);
+  margin-bottom: .5rem;
+}
+
+.qf-hero p.lead {
+  color: var(--qf-muted);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+}
+
+/* ---- Cards ---- */
+.qf-card {
+  background: var(--qf-card-bg);
+  border: 1px solid var(--qf-border);
+  border-radius: 12px;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+  height: 100%;
+}
+
+.qf-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(230,57,70,.2);
+  border-color: var(--qf-red);
+}
+
+.qf-card .card-body { padding: 1.25rem; }
+
+.qf-card .card-title {
+  color: var(--qf-gold);
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+.qf-card .card-text { color: var(--qf-muted); font-size: .9rem; }
+
+/* ---- Section headings ---- */
+.qf-section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--qf-gold);
+  border-left: 4px solid var(--qf-red);
+  padding-left: .75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ---- Badges / Event types ---- */
+.badge-academic  { background: #2a9d8f; color: #fff; }
+.badge-concert   { background: var(--qf-red); color: #fff; }
+.badge-cultural  { background: #e9c46a; color: #000; }
+
+/* ---- Star Rating ---- */
+.star-rating {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  gap: 2px;
+}
+
+.star-rating input[type="radio"] { display: none; }
+
+.star-rating label {
+  font-size: 1.6rem;
+  color: #444;
+  cursor: pointer;
+  transition: color .15s;
+}
+
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: var(--qf-gold);
+}
+
+.stars-display { color: var(--qf-gold); letter-spacing: 2px; }
+.stars-display .fa-star-half-stroke { color: var(--qf-gold); }
+.stars-display .empty-star { color: #444; }
+
+/* ---- Forms ---- */
+.qf-form-card {
+  background: var(--qf-card-bg);
+  border: 1px solid var(--qf-border);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.form-control,
+.form-select {
+  background: var(--qf-dark3) !important;
+  border: 1px solid var(--qf-border) !important;
+  color: var(--qf-text) !important;
+  border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--qf-red) !important;
+  box-shadow: 0 0 0 3px rgba(230,57,70,.25) !important;
+  background: var(--qf-dark2) !important;
+}
+
+.form-label { color: var(--qf-text); font-weight: 500; }
+
+.form-control::placeholder { color: var(--qf-muted) !important; }
+
+/* ---- Buttons ---- */
+.btn-qf-primary {
+  background: var(--qf-red);
+  border-color: var(--qf-red);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background .2s, transform .15s;
+}
+.btn-qf-primary:hover { background: #c0303c; transform: translateY(-1px); color: #fff; }
+
+.btn-qf-gold {
+  background: var(--qf-gold);
+  border-color: var(--qf-gold);
+  color: #000;
+  font-weight: 600;
+  border-radius: 8px;
+}
+.btn-qf-gold:hover { background: #d4a830; color: #000; }
+
+.btn-qf-outline {
+  border: 1px solid var(--qf-border);
+  color: var(--qf-text);
+  background: transparent;
+  border-radius: 8px;
+}
+.btn-qf-outline:hover { border-color: var(--qf-red); color: var(--qf-gold); }
+
+/* ---- Countdown Timer ---- */
+.qf-countdown {
+  display: inline-flex;
+  gap: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-unit {
+  background: var(--qf-dark3);
+  border: 1px solid var(--qf-border);
+  border-radius: 10px;
+  padding: .6rem 1rem;
+  text-align: center;
+  min-width: 70px;
+}
+
+.countdown-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--qf-gold);
+  display: block;
+  line-height: 1;
+}
+
+.countdown-label {
+  font-size: .65rem;
+  color: var(--qf-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ---- Tables ---- */
+.table-qf {
+  color: var(--qf-text);
+  border-color: var(--qf-border);
+}
+
+.table-qf thead th {
+  background: var(--qf-dark3);
+  color: var(--qf-gold);
+  border-color: var(--qf-border);
+  font-weight: 600;
+}
+
+.table-qf tbody tr { border-color: var(--qf-border); }
+
+.table-qf tbody tr:hover td { background: rgba(230,57,70,.07); }
+
+.table-qf td { vertical-align: middle; }
+
+/* ---- Filter form ---- */
+.qf-filter-bar {
+  background: var(--qf-card-bg);
+  border: 1px solid var(--qf-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ---- Agenda card ---- */
+.agenda-event-card {
+  background: var(--qf-card-bg);
+  border-left: 4px solid var(--qf-red);
+  border-radius: 0 10px 10px 0;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-top: 1px solid var(--qf-border);
+  border-right: 1px solid var(--qf-border);
+  border-bottom: 1px solid var(--qf-border);
+}
+
+/* ---- Admin dashboard ---- */
+.stat-card {
+  background: var(--qf-card-bg);
+  border: 1px solid var(--qf-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--qf-gold);
+}
+
+.stat-label {
+  font-size: .85rem;
+  color: var(--qf-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ---- Bar chart (CSS) ---- */
+.qf-bar-chart { display: flex; flex-direction: column; gap: .75rem; }
+
+.bar-row { display: flex; align-items: center; gap: 1rem; }
+
+.bar-label { min-width: 140px; font-size: .85rem; color: var(--qf-muted); text-align: right; }
+
+.bar-track {
+  flex: 1;
+  background: var(--qf-dark3);
+  border-radius: 4px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--qf-red), var(--qf-gold));
+  transition: width .8s ease;
+  display: flex;
+  align-items: center;
+  padding-left: .5rem;
+  font-size: .78rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ---- Faculty color dots ---- */
+.faculty-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* ---- Artist image ---- */
+.artist-avatar {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--qf-red);
+}
+
+.artist-avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--qf-dark3);
+  border: 2px solid var(--qf-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--qf-muted);
+  font-size: 2rem;
+}
+
+/* ---- Footer ---- */
+.qf-footer {
+  background: #08080f;
+  border-top: 2px solid var(--qf-red);
+  color: var(--qf-muted);
+}
+
+.footer-link {
+  color: var(--qf-muted);
+  font-size: .9rem;
+  display: block;
+  padding: .15rem 0;
+  transition: color .2s;
+}
+
+.footer-link:hover { color: var(--qf-gold); }
+
+/* ---- Rating comments ---- */
+.rating-comment {
+  background: var(--qf-dark3);
+  border: 1px solid var(--qf-border);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: .75rem;
+}
+
+.rating-comment .comment-author { color: var(--qf-gold); font-weight: 600; }
+.rating-comment .comment-date  { color: var(--qf-muted); font-size: .8rem; }
+
+/* ---- Responsive adjustments ---- */
+@media (max-width: 768px) {
+  .qf-hero { padding: 3rem 0 2.5rem; }
+  .countdown-unit { min-width: 55px; padding: .4rem .6rem; }
+  .countdown-value { font-size: 1.5rem; }
+  .bar-label { min-width: 90px; font-size: .78rem; }
+}
+
+@media (max-width: 576px) {
+  .qf-countdown { gap: .5rem; }
+  .countdown-unit { min-width: 48px; }
+}
+
+/* ---- Utility ---- */
+.text-gold { color: var(--qf-gold) !important; }
+.text-red  { color: var(--qf-red)  !important; }
+.bg-qf-card { background: var(--qf-card-bg) !important; }
+.border-qf  { border-color: var(--qf-border) !important; }
+
+.page-header {
+  padding: 2rem 0 1.5rem;
+  border-bottom: 1px solid var(--qf-border);
+  margin-bottom: 2rem;
+}
+
+.page-header h1 { color: var(--qf-gold); font-weight: 700; }
+
+/* ---- Import/Export ---- */
+.import-zone {
+  border: 2px dashed var(--qf-border);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: border-color .2s;
+}
+
+.import-zone:hover { border-color: var(--qf-red); }
+
+/* ---- Pagination ---- */
+.page-link {
+  background: var(--qf-dark3);
+  border-color: var(--qf-border);
+  color: var(--qf-text);
+}
+
+.page-link:hover {
+  background: var(--qf-red);
+  border-color: var(--qf-red);
+  color: #fff;
+}
+
+.page-item.active .page-link {
+  background: var(--qf-red);
+  border-color: var(--qf-red);
+}
