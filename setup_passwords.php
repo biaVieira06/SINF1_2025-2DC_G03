@@ -2,7 +2,7 @@
 // ============================================================
 // setup_passwords.php — One-time script to fix demo passwords
 // Run this ONCE after importing the SQL, then DELETE it.
-// Access: http://localhost/queima-fitas/setup_passwords.php
+// Access: http://localhost/SINF1_2025-2DC_G03/setup_passwords.php
 // ============================================================
 
 // Simple security: only allow from localhost

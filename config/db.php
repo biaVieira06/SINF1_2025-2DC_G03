@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-define('BASE_URL', 'http://localhost/queima-fitas');
+define('BASE_URL', 'http://localhost/SINF1_2025-2DC_G03');
 define('UPLOAD_DIR', __DIR__ . '/../assets/uploads/');
 define('UPLOAD_URL', BASE_URL . '/assets/uploads/');
 
