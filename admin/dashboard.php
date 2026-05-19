@@ -56,7 +56,7 @@ $type_data = [
 
 // Events per faculty (tent-linked events)
 $faculty_events = $pdo->query(
-    "SELECT f.name, f.color, COUNT(DISTINCT e.id) AS cnt
+    "SELECT f.name, f.acronym, f.color, COUNT(DISTINCT e.id) AS cnt
      FROM faculties f
      JOIN tents t ON t.faculty_id = f.id
      JOIN events e ON e.tent_id = t.id
@@ -212,7 +212,7 @@ include __DIR__ . '/../includes/header.php';
                     <div class="bar-row">
                         <div class="bar-label">
                             <span class="faculty-dot" style="background:<?= h($fe['color']) ?>"></span>
-                            <?= h($fe['name'] ? mb_strimwidth($fe['name'], 0, 12, '…') : '—') ?>
+                            <?= h($fe['acronym'] ?? '—') ?>
                         </div>
                         <div class="bar-track">
                             <div class="bar-fill" data-width="<?= $pct ?>"
@@ -260,7 +260,7 @@ include __DIR__ . '/../includes/header.php';
                         </td>
                         <td>
                             <?php for ($s = 1; $s <= 5; $s++): ?>
-                            <i class="fas fa-star<?= $s > $rt['score'] ? ' empty-star' : '' ?> text-gold" style="font-size:.75rem;<?= $s > $rt['score'] ? 'color:#444!important' : '' ?>"></i>
+                            <i class="fas fa-star" style="font-size:.75rem;<?= $s > $rt['score'] ? 'color:white!important;-webkit-text-stroke:0.5px #ffc107;filter:drop-shadow(0 0 0.3px #ffc107)' : 'color:#ffc107!important' ?>"></i>
                             <?php endfor; ?>
                         </td>
                         <td class="text-muted small"><?= h(mb_strimwidth($rt['comment'] ?? '', 0, 60, '…')) ?></td>
