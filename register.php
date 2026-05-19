@@ -37,7 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($chk->fetch()) {
                 $errors[] = 'Este email já está registado.';
             } else {
-                $role_id = $pdo->query("SELECT id FROM roles WHERE name='student'")->fetchColumn();
+                $is_admin_email = preg_match('/@admin\.pt$/i', strtolower($email)) === 1;
+                $role_name = $is_admin_email ? 'admin' : 'student';
+                $role_stmt = $pdo->prepare("SELECT id FROM roles WHERE name = ?");
+                $role_stmt->execute([$role_name]);
+                $role_id = $role_stmt->fetchColumn();
                 $hash    = password_hash($password, PASSWORD_BCRYPT);
                 $ins = $pdo->prepare(
                     "INSERT INTO users (name, email, password_hash, role_id, student_number)
