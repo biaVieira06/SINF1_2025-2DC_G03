@@ -40,17 +40,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $type        = $_POST['type']             ?? '';
         $tent_id     = !empty($_POST['tent_id'])  ? (int)$_POST['tent_id'] : null;
         $sel_artists = $_POST['artists']          ?? [];
+        $image_path  = $event['image_path'];
 
         if (!$name)      $errors[] = 'Nome obrigatório.';
         if (!$date_time) $errors[] = 'Data e hora obrigatórias.';
         if (!$location)  $errors[] = 'Local obrigatório.';
         if (!in_array($type, ['academic_ceremony','concert','cultural_activity'])) $errors[] = 'Tipo inválido.';
 
+        // Handle image upload
+        if (!empty($_FILES['image']['name'])) {
+            $file     = $_FILES['image'];
+            $max_size = 2 * 1024 * 1024; // 2MB
+
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                $errors[] = 'Erro ao fazer upload da imagem.';
+            } elseif ($file['size'] > $max_size) {
+                $errors[] = 'A imagem não pode exceder 2MB.';
+            } elseif (!is_uploaded_file($file['tmp_name'])) {
+                $errors[] = 'Ficheiro inválido.';
+            } else {
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mime  = finfo_file($finfo, $file['tmp_name']);
+                finfo_close($finfo);
+
+                $map = [
+                    'image/jpeg' => 'jpg',
+                    'image/png'  => 'png',
+                    'image/webp' => 'webp',
+                    'image/gif'  => 'gif',
+                ];
+
+                if (!isset($map[$mime])) {
+                    $errors[] = 'Formato de imagem inválido (permitido: JPG, PNG, WEBP, GIF).';
+                } else {
+                    $ext      = $map[$mime];
+                    $filename = 'event_' . uniqid() . '.' . $ext;
+                    $dest     = UPLOAD_DIR . $filename;
+                    if (!is_dir(UPLOAD_DIR)) mkdir(UPLOAD_DIR, 0755, true);
+                    if (move_uploaded_file($file['tmp_name'], $dest)) {
+                        // delete old image safely
+                        if ($image_path) {
+                            $old = realpath(UPLOAD_DIR . $image_path);
+                            $updir = realpath(UPLOAD_DIR);
+                            if ($old && $updir && strpos($old, $updir) === 0 && file_exists($old)) unlink($old);
+                        }
+                        $image_path = $filename;
+                    } else {
+                        $errors[] = 'Não foi possível guardar a imagem.';
+                    }
+                }
+            }
+        }
+
         if (empty($errors)) {
             $upd = $pdo->prepare(
-                "UPDATE events SET name=?, description=?, date_time=?, location=?, type=?, tent_id=? WHERE id=?"
+                "UPDATE events SET name=?, description=?, date_time=?, location=?, type=?, tent_id=?, image_path=? WHERE id=?"
             );
-            $upd->execute([$name, $description, $date_time, $location, $type, $tent_id, $id]);
+            $upd->execute([$name, $description, $date_time, $location, $type, $tent_id, $image_path, $id]);
 
             // Sync artists
             $pdo->prepare("DELETE FROM event_artists WHERE event_id=?")->execute([$id]);
@@ -85,7 +131,7 @@ include __DIR__ . '/../includes/header.php';
                 </div>
                 <?php endif; ?>
 
-                <form method="post" class="qf-validate" novalidate>
+                <form method="post" enctype="multipart/form-data" class="qf-validate" novalidate>
                     <?= csrf_field() ?>
                     <div class="mb-3">
                         <label class="form-label">Nome do evento *</label>
@@ -112,6 +158,20 @@ include __DIR__ . '/../includes/header.php';
                         <input type="text" name="location" class="form-control" required
                                value="<?= h($_POST['location'] ?? $event['location']) ?>">
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Poster/Imagem <small class="text-muted">(JPG, PNG, WEBP — máx. 2MB, opcional)</small></label>
+                        <?php if ($event['image_path'] && file_exists(UPLOAD_DIR . $event['image_path'])): ?>
+                        <div class="mb-2">
+                            <img src="<?= UPLOAD_URL . h($event['image_path']) ?>" id="img-preview"
+                                 style="width:150px;height:auto;object-fit:cover;border-radius:8px;border:2px solid var(--qf-red);">
+                        </div>
+                        <?php else: ?>
+                        <img id="img-preview" src="" alt="" style="display:none;max-width:150px;border-radius:8px;">
+                        <?php endif; ?>
+                        <input type="file" name="image" class="form-control" accept="image/*" data-preview="img-preview">
+                        <div class="form-text text-muted">Deixa em branco para manter a imagem actual.</div>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label">Tenda (opcional)</label>
                         <select name="tent_id" class="form-select">

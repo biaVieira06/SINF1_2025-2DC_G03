@@ -117,6 +117,13 @@ include __DIR__ . '/../includes/header.php';
 
                 <h1 class="text-gold fs-2 mb-3"><?= h($event['name']) ?></h1>
 
+                <?php if (!empty($event['image_path']) && file_exists(UPLOAD_DIR . $event['image_path'])): ?>
+                <div class="mb-3 text-center">
+                    <img src="<?= UPLOAD_URL . h($event['image_path']) ?>" alt="<?= h($event['name']) ?>"
+                         style="max-width:100%;height:auto;border-radius:8px;border:2px solid var(--qf-red);">
+                </div>
+                <?php endif; ?>
+
                 <div class="row g-3 mb-4">
                     <div class="col-sm-6">
                         <div class="d-flex align-items-center gap-2">

@@ -179,6 +179,12 @@ include __DIR__ . '/../includes/header.php';
                         <?php endif; ?>
                     </div>
 
+                    <?php if (!empty($ev['image_path']) && file_exists(UPLOAD_DIR . $ev['image_path'])): ?>
+                    <div class="mb-2 text-center">
+                        <img src="<?= UPLOAD_URL . h($ev['image_path']) ?>" alt="<?= h($ev['name']) ?>"
+                             style="max-width:100%;height:120px;object-fit:cover;border-radius:6px;">
+                    </div>
+                    <?php endif; ?>
                     <h5 class="card-title"><?= h($ev['name']) ?></h5>
 
                     <p class="card-text">
